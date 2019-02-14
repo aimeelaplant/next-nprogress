@@ -3,6 +3,10 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
+
 class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
@@ -12,18 +16,6 @@ class MyApp extends App {
     }
 
     return { pageProps };
-  }
-
-  componentDidMount() {
-    Router.events.on('routeChangeStart', () => NProgress.start());
-    Router.events.on('routeChangeComplete', () => NProgress.done());
-    Router.events.on('routeChangeError', () => NProgress.done());
-  }
-
-  componentWillUnmount() {
-    Router.events.off('routeChangeStart');
-    Router.events.off('routeChangeComplete');
-    Router.events.off('routeChangeError');
   }
 
   render() {
